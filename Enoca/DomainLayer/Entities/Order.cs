@@ -9,9 +9,9 @@ namespace DomainLayer.Entities
 {
     public class Order:BaseEntity
     {
-        public string FirmaId { get; set; }
-        public Firma Firma { get; set; }
-        public string ProductId { get; set; }
+        public Firm Firm { get; set; }
         public Product Product { get; set; }
+        public string Name { get; set; }
+        public DateTime OrderDate { get; set; } = DateTime.UtcNow;
     }
 }
