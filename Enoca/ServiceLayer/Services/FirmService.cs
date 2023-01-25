@@ -46,10 +46,7 @@ namespace ServiceLayer.Services
         {
             var entity = await _repository.GetAsync(Id);
 
-            if (firmaEditDto.Name == null)
-            {
-                firmaEditDto.Name = entity.Name;
-            }
+         
             if (firmaEditDto.OrderAccess == null)
             {
                 firmaEditDto.OrderAccess = entity.OrderAccess;
