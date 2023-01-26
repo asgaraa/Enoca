@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace RepositoryLayer.Migrations
 {
-    public partial class CreateTablesAgain : Migration
+    public partial class addTables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -33,7 +33,7 @@ namespace RepositoryLayer.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     FirmaId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Stok = table.Column<bool>(type: "bit", nullable: false),
+                    Stok = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false),
                     SoftDelete = table.Column<bool>(type: "bit", nullable: false),
                     CreatTime = table.Column<DateTime>(type: "datetime2", nullable: false)

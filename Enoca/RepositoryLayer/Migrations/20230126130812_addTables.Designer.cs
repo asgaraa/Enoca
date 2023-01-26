@@ -12,8 +12,8 @@ using RepositoryLayer;
 namespace RepositoryLayer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230125150929_CreateTablesAgain")]
-    partial class CreateTablesAgain
+    [Migration("20230126130812_addTables")]
+    partial class addTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -109,8 +109,8 @@ namespace RepositoryLayer.Migrations
                     b.Property<bool>("SoftDelete")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("Stok")
-                        .HasColumnType("bit");
+                    b.Property<int>("Stok")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

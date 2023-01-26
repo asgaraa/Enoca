@@ -107,8 +107,8 @@ namespace RepositoryLayer.Migrations
                     b.Property<bool>("SoftDelete")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("Stok")
-                        .HasColumnType("bit");
+                    b.Property<int>("Stok")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

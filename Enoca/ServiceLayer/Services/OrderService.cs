@@ -2,69 +2,88 @@
 using DomainLayer.Entities;
 using RepositoryLayer.Repositories.Interfaces;
 using ServiceLayer.DTOs.Order;
-using ServiceLayer.DTOs.Product;
 using ServiceLayer.Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ServiceLayer.Services
 {
-    public class OrderService: IOrderService
-    {
-        private readonly IOrderRepository _repository;
-        private readonly IMapper _mapper;
-        public OrderService(IOrderRepository repository, IMapper mapper)
-        {
-            _repository = repository;
-            _mapper = mapper;
-        }
+	public class OrderService : IOrderService
+	{
+		private readonly IOrderRepository _repository;
+		private readonly IMapper _mapper;
+		private readonly IFirmRepository _firmRepository;
+		private readonly IProductRepository _productRepository;
+		public OrderService(IOrderRepository repository,
+							IMapper mapper,
+							IFirmRepository firmRepository,
+							IProductRepository productRepository)
+		{
+			_repository = repository;
+			_mapper = mapper;
+			_firmRepository = firmRepository;
+			_productRepository = productRepository;
+		}
 
-        public async Task CreateAsync(OrderDto orderDto)
-        {
-            var model = _mapper.Map<Order>(orderDto);
-            await _repository.CreateAsync(model);
+		public async Task<string> CreateAsync(OrderCreateDto orderDto)
+		{
+			Firm firm = await _firmRepository.GetAsync(orderDto.FirmId);
+			if (!firm.OrderAccess)
+			{
+				return "Firma Onaylı Değil";
+			}
 
-        }
+			if ((firm.OrderStartTime! <= DateTime.Now) || (firm.OrderEndTime! >= DateTime.Now))
+			{
+                //($"{DateTime.UtcNow.ToString("HH:mm")}")
 
-        public async Task DeleteAsync(string id)
-        {
-            var setting = await _repository.GetAsync(id);
-            await _repository.DeleteAsync(setting);
-        }
+                return "Firma şuan sipariş almıyor";
+			}
+			Product product = await _productRepository.GetAsync(orderDto.ProductId);
+			Order newOrder = _mapper.Map<Order>(orderDto);
+			newOrder.Id = Guid.NewGuid().ToString("N");
+			newOrder.Firm = firm;
+			newOrder.Product = product;
 
-        public async Task<List<OrderDto>> GetAllAsync()
-        {
-            var model = await _repository.GetAllAsync();
-            var res = _mapper.Map<List<OrderDto>>(model);
-            return res;
-        }
+			await _repository.CreateAsync(newOrder);
 
-        public async Task UpdateAsync(string Id, OrderEditDto orderEditDto)
-        {
-            var entity = await _repository.GetAsync(Id);
+			return ($"{DateTime.UtcNow.ToString("HH:mm")}");
+		}
 
-            if (orderEditDto.Name == null)
-            {
-                orderEditDto.Name = entity.Name;
-            }
-            if (orderEditDto.OrderDate == null)
-            {
-                orderEditDto.OrderDate = entity.OrderDate;
-            }
+		public async Task DeleteAsync(string id)
+		{
+			var setting = await _repository.GetAsync(id);
+			await _repository.DeleteAsync(setting);
+		}
+
+		public async Task<List<OrderDto>> GetAllAsync()
+		{
+			var model = await _repository.GetAllAsync();
+			var res = _mapper.Map<List<OrderDto>>(model);
+			return res;
+		}
+
+		public async Task UpdateAsync(string Id, OrderEditDto orderEditDto)
+		{
+			var entity = await _repository.GetAsync(Id);
+
+			if (orderEditDto.Name == null)
+			{
+				orderEditDto.Name = entity.Name;
+			}
+			if (orderEditDto.OrderDate == null)
+			{
+				orderEditDto.OrderDate = entity.OrderDate;
+			}
 
 
-            _mapper.Map(orderEditDto, entity);
+			_mapper.Map(orderEditDto, entity);
 
-            await _repository.UpdateAsync(entity);
-        }
-        public async Task<OrderDto> GetAsync(string id)
-        {
-            var model = await _repository.GetAsync(id);
-            var res = _mapper.Map<OrderDto>(model);
-            return res;
-        }
-    }
+			await _repository.UpdateAsync(entity);
+		}
+		public async Task<OrderDto> GetAsync(string id)
+		{
+			var model = await _repository.GetAsync(id);
+			var res = _mapper.Map<OrderDto>(model);
+			return res;
+		}
+	}
 }

@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace EnocaApi.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class BaseController : ControllerBase
-    {
-    }
+	[ApiController]
+	[Route("api/[controller]")]
+	public class BaseController : ControllerBase
+	{
+	}
 }

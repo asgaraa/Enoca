@@ -1,25 +1,20 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using RepositoryLayer.Repositories.Interfaces;
 using RepositoryLayer.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using RepositoryLayer.Repositories.Interfaces;
 
 namespace RepositoryLayer
 {
-    public static class DependencyInjection
-    {
-        public static IServiceCollection AddRepositoryLayer(this IServiceCollection services)
-        {
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+	public static class DependencyInjection
+	{
+		public static IServiceCollection AddRepositoryLayer(this IServiceCollection services)
+		{
+			services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
-            services.AddScoped<IFirmRepository, FirmRepository>();
-            services.AddScoped<IOrderRepository, OrderRepository>();
-            services.AddScoped<IProductRepository, ProductRepository>();
+			services.AddScoped<IFirmRepository, FirmRepository>();
+			services.AddScoped<IOrderRepository, OrderRepository>();
+			services.AddScoped<IProductRepository, ProductRepository>();
 
-            return services;
-        }
-    }
+			return services;
+		}
+	}
 }
