@@ -31,13 +31,12 @@ namespace ServiceLayer.Services
 				return "Firma Onaylı Değil";
 			}
 
-			if ((firm.OrderStartTime! <= DateTime.Now) || (firm.OrderEndTime! >= DateTime.Now))
-			{
-                //($"{DateTime.UtcNow.ToString("HH:mm")}")
+            if ((firm.OrderStartTime > DateTime.Now) || (firm.OrderEndTime < DateTime.Now))
+            {
 
-                return "Firma şuan sipariş almıyor";
-			}
-			Product product = await _productRepository.GetAsync(orderDto.ProductId);
+                return ($"Firma suan siparis almiyor {DateTime.Now.ToString("HH:mm")}"); ;
+            }
+            Product product = await _productRepository.GetAsync(orderDto.ProductId);
 			Order newOrder = _mapper.Map<Order>(orderDto);
 			newOrder.Id = Guid.NewGuid().ToString("N");
 			newOrder.Firm = firm;
@@ -45,8 +44,8 @@ namespace ServiceLayer.Services
 
 			await _repository.CreateAsync(newOrder);
 
-			return ($"{DateTime.UtcNow.ToString("HH:mm")}");
-		}
+			return ($"{DateTime.Now.ToString("HH:mm")}");
+		 }
 
 		public async Task DeleteAsync(string id)
 		{

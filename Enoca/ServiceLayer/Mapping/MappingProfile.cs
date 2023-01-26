@@ -13,7 +13,8 @@ namespace ServiceLayer.Mapping
 			CreateMap<Firm, FirmaDto>().ReverseMap();
 			CreateMap<Firm, FirmaEditDto>().ReverseMap();
 			CreateMap<Order, OrderDto>().ReverseMap();
-			CreateMap<Order, OrderEditDto>().ReverseMap();
+            CreateMap<Order, OrderCreateDto>().ReverseMap();
+            CreateMap<Order, OrderEditDto>().ReverseMap();
 			CreateMap<Product, ProductEditDto>().ReverseMap();
 			CreateMap<Product, ProductDto>().ReverseMap();
 
